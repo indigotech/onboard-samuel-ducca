@@ -3,26 +3,11 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
-import StatefulHello from './components/StatefulHello';
-import './components/Hello.css';
-import './components/Login.css';
+import './components/LoginPage.css';
 
-import { createStore } from 'redux';
-import { enthusiasm } from './reducers/index';
-import { StoreState } from './types/index';
-import { EnthusiasmAction } from './actions/index';
-import Hello from './containers/Hello';
-import Login from './containers/Login';
-import { Provider } from 'react-redux';
-
-const store = createStore<StoreState, EnthusiasmAction, any, any>(enthusiasm, {
-  enthusiasmLevel: 1,
-  languageName: 'Taqtile',
-});
+import LoginPage from './components/LoginPage';
 
 ReactDOM.render(
-  <Provider store={store}>
-    <Login />
-  </Provider>,
+    <LoginPage />,
   document.getElementById('root') as HTMLElement
 );

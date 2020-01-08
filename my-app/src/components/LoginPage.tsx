@@ -1,20 +1,13 @@
-// src/components/Login.tsx
+// src/components/LoginPage.tsx
 
 import * as React from 'react';
 
-export interface Props {
-  name: string;
-  enthusiasmLevel?: number;
-  onIncrement?: () => void;
-  onDecrement?: () => void;
-}
-
-function Login({ name, enthusiasmLevel = 1, onIncrement, onDecrement }: Props) {
+function LoginPage() {
   return (
     <div className="login">
-      <div className="greeting">
-        Bem-vindo(a) à {name}!
-      </div>
+      <h1 className="greeting">
+        Bem-vindo(a) à Taqtile!
+      </h1>
       <div className="inputArea">
 
         <form>
@@ -33,6 +26,6 @@ function Login({ name, enthusiasmLevel = 1, onIncrement, onDecrement }: Props) {
   );
 }
 
-export default Login;
+export default LoginPage;
 
 // helpers
