@@ -59,3 +59,7 @@
 .inputField{
   margin: 1rem;
 }
+
+.inputField > .inputFieldError {
+  border-color: crimson;
+}
