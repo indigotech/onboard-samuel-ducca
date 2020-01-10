@@ -22,7 +22,7 @@ class LoginPage extends React.Component<LoginPageProps, LoginPageState>  {
     this.handleSubmit = this.handleSubmit.bind(this);
   }
 
-  handleChange(event: any) {
+  private handleChange(event: any) {
     const name = event.target.name;
 
     if (name == "password"){
@@ -33,9 +33,9 @@ class LoginPage extends React.Component<LoginPageProps, LoginPageState>  {
     }
   }
 
-  handleSubmit(event: any) {
+  private handleSubmit(event: any) {
 
-    this.setState({badEmail: false, badPassword: false});
+    var badEmailtmp = false, badPasswordtmp = false;
 
     if (!validateEmail(this.state.email)){
       if (this.state.email == ""){
@@ -44,7 +44,7 @@ class LoginPage extends React.Component<LoginPageProps, LoginPageState>  {
       else {
         alert('Email inválido');
       }
-      this.setState({badEmail: true});
+      badEmailtmp = true;
     }
 
     if (!validatePassword(this.state.password)){
@@ -54,10 +54,13 @@ class LoginPage extends React.Component<LoginPageProps, LoginPageState>  {
       else {
         alert('A senha deve ter pelo menos 7 caracteres e conter ao menos um dígito e uma letra');
       }
-      this.setState({badPassword: true});
+      badPasswordtmp = true;
     }
 
     event.preventDefault();
+
+    this.setState({badEmail: badEmailtmp, badPassword: badPasswordtmp});
+
   }
 
   render() {
