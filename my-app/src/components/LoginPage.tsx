@@ -1,6 +1,11 @@
 // src/components/LoginPage.tsx
 
 import * as React from 'react';
+import gql from 'graphql-tag';
+import { useMutation, useQuery } from '@apollo/client';
+import { func } from 'prop-types';
+import { client } from '..';
+
 interface LoginPageProps {
   email?: string;
   password?: string;
@@ -22,7 +27,7 @@ class LoginPage extends React.Component<LoginPageProps, LoginPageState>  {
     this.handleSubmit = this.handleSubmit.bind(this);
   }
 
-  handleChange(event: any) {
+  private handleChange(event: any) {
     const name = event.target.name;
 
     if (name == "password"){
@@ -33,9 +38,9 @@ class LoginPage extends React.Component<LoginPageProps, LoginPageState>  {
     }
   }
 
-  handleSubmit(event: any) {
+  private handleSubmit(event: any) {
 
-    this.setState({badEmail: false, badPassword: false});
+    var badEmailtmp = false, badPasswordtmp = false;
 
     if (!validateEmail(this.state.email)){
       if (this.state.email == ""){
@@ -44,7 +49,7 @@ class LoginPage extends React.Component<LoginPageProps, LoginPageState>  {
       else {
         alert('Email inválido');
       }
-      this.setState({badEmail: true});
+      badEmailtmp = true;
     }
 
     if (!validatePassword(this.state.password)){
@@ -54,10 +59,16 @@ class LoginPage extends React.Component<LoginPageProps, LoginPageState>  {
       else {
         alert('A senha deve ter pelo menos 7 caracteres e conter ao menos um dígito e uma letra');
       }
-      this.setState({badPassword: true});
+      badPasswordtmp = true;
     }
 
     event.preventDefault();
+
+    this.setState({badEmail: badEmailtmp, badPassword: badPasswordtmp});
+
+    if (!badEmailtmp && !badPasswordtmp)
+      doLogin(this.state.email, this.state.password);
+
   }
 
   render() {
@@ -78,6 +89,7 @@ class LoginPage extends React.Component<LoginPageProps, LoginPageState>  {
                 <input className={this.state.badPassword ? 'inputFieldError': ''} name="password" value={this.state.password} onChange={this.handleChange}></input>
             </div>
             <button onClick={this.handleSubmit} className="submitButton">Entrar</button>
+            <button onClick={mostraToken} className="submitButton">Teste token</button>
         </form>
       </div>
     </div>
@@ -99,3 +111,38 @@ function validatePassword(password: string)
   var re = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{7,}$/
   return re.test(password);
 }
+
+function storeToken(token: string)
+{
+  localStorage.setItem("@onboarding/token", token);
+}
+
+function mostraToken(){
+  var testeToken = localStorage.getItem("@onboarding/token");
+  alert("O token eh " + testeToken);
+}
+
+function doLogin(email:string,password:string)
+{
+  const LOGIN_MUTATION = gql`
+  mutation Authenticate{
+    Login(data: {email: "${email}", password: "${password}"})
+    {
+      user{
+        id
+        email
+      }
+      token
+    }
+
+  }
+  `;
+
+  client.mutate({mutation: LOGIN_MUTATION})
+  .then(result => {
+    alert(result.data.Login.token);
+    storeToken(result.data.Login.token);
+  })
+  .catch(error => alert(error));
+}
+
