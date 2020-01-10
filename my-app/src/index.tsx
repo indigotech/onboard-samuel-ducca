@@ -6,8 +6,9 @@ import * as serviceWorker from './serviceWorker';
 import './components/LoginPage.css';
 
 import LoginPage from './components/LoginPage';
+import { tsPropertySignature } from '@babel/types';
 
 ReactDOM.render(
     <LoginPage />,
   document.getElementById('root') as HTMLElement
-);
+)
