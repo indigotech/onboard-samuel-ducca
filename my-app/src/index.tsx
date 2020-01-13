@@ -9,6 +9,14 @@ import { tsPropertySignature } from '@babel/types';
 import { ApolloClient, HttpLink, InMemoryCache } from '@apollo/client';
 import { ApolloProvider } from '@apollo/client';
 
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  Link
+} from "react-router-dom";
+import UserListPage from './components/UserListPage';
+
 export const client = new ApolloClient({
   cache: new InMemoryCache(),
   link: new HttpLink({
@@ -17,14 +25,24 @@ export const client = new ApolloClient({
 });
 
 const App = () => (
-  <ApolloProvider client={client}>
-      <LoginPage />
-  </ApolloProvider>
+  <Router>
+    <Switch>
+      <Route path="/users">
+        <UserListPage/>
+      </Route>
+      <Route exact path="/">
+        <LoginPage />
+      </Route>
+    </Switch>
+  </Router>
+
 );
 
 ReactDOM.render(
-    //<LoginPage />,
-    <App />,
+  <ApolloProvider client={client}>
+    <App/>
+  </ApolloProvider>
+ ,
   document.getElementById('root') as HTMLElement
 )
 
