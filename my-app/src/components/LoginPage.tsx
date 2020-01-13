@@ -1,6 +1,11 @@
 // src/components/LoginPage.tsx
 
 import * as React from 'react';
+import { useMutation, useQuery } from '@apollo/client';
+import { func } from 'prop-types';
+import { Redirect } from 'react-router-dom';
+import { doLogin } from './LoginAuth';
+
 interface LoginPageProps {
   email?: string;
   password?: string;
@@ -11,12 +16,13 @@ interface LoginPageState {
   password: string;
   badPassword: boolean;
   badEmail: boolean;
+  redirect: boolean;
 }
 
 class LoginPage extends React.Component<LoginPageProps, LoginPageState>  {
   constructor(props: LoginPageProps) {
     super(props);
-    this.state = {email: '', password: '', badPassword: false, badEmail: false};
+    this.state = {email: '', password: '', badPassword: false, badEmail: false, redirect: false};
 
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -33,8 +39,8 @@ class LoginPage extends React.Component<LoginPageProps, LoginPageState>  {
     }
   }
 
-  private handleSubmit(event: any) {
-
+   async handleSubmit(event: any) {
+      
     var badEmailtmp = false, badPasswordtmp = false;
 
     if (!validateEmail(this.state.email)){
@@ -59,33 +65,49 @@ class LoginPage extends React.Component<LoginPageProps, LoginPageState>  {
 
     event.preventDefault();
 
-    this.setState({badEmail: badEmailtmp, badPassword: badPasswordtmp});
+     if (!badEmailtmp && !badPasswordtmp){
+
+      try{
+        await doLogin(this.state.email, this.state.password);
+        this.setState({badEmail: badEmailtmp, badPassword: badPasswordtmp, redirect:true});
+      }
+      catch(error){
+        alert(error);
+        this.setState({badEmail: badEmailtmp, badPassword: badPasswordtmp, redirect:false});
+      }
+
+    }
+
 
   }
 
   render() {
-    return (
-      <div className="login">
-      <h1 className="greeting">
-        Bem-vindo(a) à Taqtile!
-      </h1>
-      <div className="inputArea">
+    if(this.state.redirect){
+      return <Redirect to="/users"></Redirect>
+    }
+    else {
+      return (
+          <div className="login">
+            <h1 className="greeting">
+              Bem-vindo(a) à Taqtile!
+            </h1>
+            <div className="inputArea">
 
-        <form>
-            <div className="inputField" >
-                <label>Email</label> <br></br>
-                 <input className={this.state.badEmail ? 'inputFieldError': ''} name="email" value={this.state.email} onChange={this.handleChange} placeholder="nome.sobrenome@taqtile.com"></input>
+              <form>
+                  <div className="inputField" >
+                      <label>Email</label> <br></br>
+                      <input className={this.state.badEmail ? 'inputFieldError': ''} name="email" value={this.state.email} onChange={this.handleChange} placeholder="nome.sobrenome@taqtile.com"></input>
+                  </div>
+                  <div className="inputField">
+                      <label>Senha</label> <br></br>
+                      <input className={this.state.badPassword ? 'inputFieldError': ''} name="password" value={this.state.password} onChange={this.handleChange}></input>
+                  </div>
+                  <button onClick={this.handleSubmit} className="submitButton">Entrar</button>
+              </form>
             </div>
-            <div className="inputField">
-                <label>Senha</label> <br></br>
-                <input className={this.state.badPassword ? 'inputFieldError': ''} name="password" value={this.state.password} onChange={this.handleChange}></input>
-            </div>
-            <button onClick={this.handleSubmit} className="submitButton">Entrar</button>
-        </form>
-      </div>
-    </div>
-
-    );
+          </div>
+      );
+    }
   }
 }
 
@@ -102,3 +124,6 @@ function validatePassword(password: string)
   var re = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{7,}$/
   return re.test(password);
 }
+
+
+
