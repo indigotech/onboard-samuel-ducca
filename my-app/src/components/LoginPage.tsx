@@ -1,11 +1,10 @@
 // src/components/LoginPage.tsx
 
 import * as React from 'react';
-import gql from 'graphql-tag';
 import { useMutation, useQuery } from '@apollo/client';
 import { func } from 'prop-types';
-import { client } from '..';
 import { Redirect } from 'react-router-dom';
+import { doLogin } from './LoginAuth';
 
 interface LoginPageProps {
   email?: string;
@@ -125,28 +124,5 @@ function validatePassword(password: string)
   return re.test(password);
 }
 
-function storeToken(token: string)
-{
-  localStorage.setItem("@onboarding/token", token);
-}
 
-function mostraToken(){
-  var testeToken = localStorage.getItem("@onboarding/token");
-  alert("O token eh " + testeToken);
-}
-
-async function doLogin(email:string,password:string) : Promise<void>
-{
-  const LOGIN_MUTATION = gql`
-  mutation Authenticate{
-    Login(data: {email: "${email}", password: "${password}"})
-    {
-      token
-    }
-  }
-  `;
-
-  var result = await client.mutate({mutation: LOGIN_MUTATION});
-  storeToken(result.data.Login.token);
-}
 
