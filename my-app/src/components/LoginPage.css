@@ -25,6 +25,9 @@
   width: 50%;
   max-width: 150px;
 }
+.submitButton:disabled{
+  opacity: 50%;
+}
 
 .submitButton:hover{
   background-color: rgb(65, 83, 35);

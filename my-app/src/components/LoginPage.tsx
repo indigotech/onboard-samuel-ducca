@@ -17,12 +17,20 @@ interface LoginPageState {
   badPassword: boolean;
   badEmail: boolean;
   redirect: boolean;
+  isLoading: boolean;
 }
 
 class LoginPage extends React.Component<LoginPageProps, LoginPageState>  {
   constructor(props: LoginPageProps) {
     super(props);
-    this.state = {email: '', password: '', badPassword: false, badEmail: false, redirect: false};
+    this.state = {
+      email: '',
+      password: '',
+      badPassword: false,
+      badEmail: false,
+      redirect: false,
+      isLoading: false
+    };
 
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -39,8 +47,8 @@ class LoginPage extends React.Component<LoginPageProps, LoginPageState>  {
     }
   }
 
-   async handleSubmit(event: any) {
-      
+  async handleSubmit(event: any) {
+
     var badEmailtmp = false, badPasswordtmp = false;
 
     if (!validateEmail(this.state.email)){
@@ -65,15 +73,15 @@ class LoginPage extends React.Component<LoginPageProps, LoginPageState>  {
 
     event.preventDefault();
 
-     if (!badEmailtmp && !badPasswordtmp){
-
+    if (!badEmailtmp && !badPasswordtmp){
+      this.setState({isLoading:true});
       try{
         await doLogin(this.state.email, this.state.password);
-        this.setState({badEmail: badEmailtmp, badPassword: badPasswordtmp, redirect:true});
+        this.setState({badEmail: badEmailtmp, badPassword: badPasswordtmp, redirect:true, isLoading: false});
       }
       catch(error){
         alert(error);
-        this.setState({badEmail: badEmailtmp, badPassword: badPasswordtmp, redirect:false});
+        this.setState({badEmail: badEmailtmp, badPassword: badPasswordtmp, redirect:false, isLoading: false});
       }
 
     }
@@ -88,6 +96,7 @@ class LoginPage extends React.Component<LoginPageProps, LoginPageState>  {
     else {
       return (
           <div className="login">
+            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"></link>
             <h1 className="greeting">
               Bem-vindo(a) à Taqtile!
             </h1>
@@ -102,7 +111,9 @@ class LoginPage extends React.Component<LoginPageProps, LoginPageState>  {
                       <label>Senha</label> <br></br>
                       <input className={this.state.badPassword ? 'inputFieldError': ''} name="password" value={this.state.password} onChange={this.handleChange}></input>
                   </div>
-                  <button onClick={this.handleSubmit} className="submitButton">Entrar</button>
+                  <button onClick={this.handleSubmit} className='submitButton' disabled={this.state.isLoading}>
+                    <i className={this.state.isLoading? 'fa fa-circle-o-notch fa-spin' : ''}></i> Entrar
+                  </button>
               </form>
             </div>
           </div>
