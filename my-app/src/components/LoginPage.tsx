@@ -40,7 +40,7 @@ class LoginPage extends React.Component<LoginPageProps, LoginPageState>  {
   }
 
    async handleSubmit(event: any) {
-
+      
     var badEmailtmp = false, badPasswordtmp = false;
 
     if (!validateEmail(this.state.email)){
@@ -65,7 +65,7 @@ class LoginPage extends React.Component<LoginPageProps, LoginPageState>  {
 
     event.preventDefault();
 
-    if (!badEmailtmp && !badPasswordtmp){
+     if (!badEmailtmp && !badPasswordtmp){
 
       try{
         await doLogin(this.state.email, this.state.password);
@@ -77,6 +77,7 @@ class LoginPage extends React.Component<LoginPageProps, LoginPageState>  {
       }
 
     }
+
 
   }
 
