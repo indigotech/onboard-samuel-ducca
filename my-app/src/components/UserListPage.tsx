@@ -1,47 +1,43 @@
 // src/components/UserListPage.tsx
 import * as React from 'react';
+import { useState, useEffect } from 'react';
+import { User } from '../types';
+import {fetchUsers} from './UserListQueries'
 
-const list = [
-  {
-    id: 1,
-    name: 'Mark Hamill',
-    email: 'mark@starwars.com',
-  },
-  {
-    id: 2,
-    name: 'John Boyega',
-    email: 'johnnyboy@starwars.com',
-  },
-  {
-    id: 3,
-    name: 'Carrie Fischer',
-    email: 'leiaorgana@starwars.com',
-  },
-  {
-    id: 4,
-    name: 'Liam Neelson',
-    email: 'deathbydarthmaul@starwars.com',
-  },
-  {
-    id: 5,
-    name: 'Evan McGregor',
-    email: 'hellothere@starwars.com',
-  },
-];
+const UserListPage: React.FC = props => {
+  const [userList, setUserList] = useState();
 
-interface User {
-  id: number;
-  name: string;
-  email: string;
-}
+  useEffect(() => {
 
-function UserListPage() {
-  return (
-    <div className="userList" >
+    async function getUserList() {
+      try{
+        setUserList(await fetchUsers());
+      }
+      catch(error){
+        alert(error);
+      }
+    }
+
+    getUserList();
+
+  }, []);
+
+  if (userList == null){
+    return (
+      <div className="userList" >
       <h2 className="title"> Usuários Cadastrados </h2>
-      <List list={list}></List>
+        <p> Nenhum usuário encontrado </p>
     </div>
-  );
+    )
+  }
+  else {
+    return (
+      <div className="userList" >
+        <h2 className="title"> Usuários Cadastrados </h2>
+        <List list={userList}></List>
+      </div>
+    );
+  }
 }
 
 export default UserListPage;
@@ -69,7 +65,10 @@ const ListItem: React.FC<ListItemProps> = props => (
   <tr>
     <td>
       <h2>{props.item.name}</h2>
-      <div>{props.item.email}</div>
+      <p> <b>Email:</b> {props.item.email}</p>
+      <p> <b>CPF:</b> {props.item.cpf}</p>
+      <p> <b>Cargo:</b> {props.item.role}</p>
+      <p> <b>Nascimento:</b> {props.item.birthDate}</p>
     </td>
   </tr>
 );
