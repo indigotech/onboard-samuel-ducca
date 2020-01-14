@@ -1,6 +1,9 @@
 // src/types/index.tsx
-
-export interface StoreState {
-    languageName: string;
-    enthusiasmLevel: number;
+export interface User {
+  id: number,
+  name: string,
+  cpf: string,
+  birthDate: string,
+  email: string,
+  role: string
 }
