@@ -29,3 +29,31 @@ td:hover{
 tr:last-child > td{
   border-bottom: 1px solid lightgray;
 }
+
+.paginationButton {
+  margin: .5rem;
+  font-size: 16px;
+  font-weight: bold;
+  background-color: darkolivegreen; /* Green */
+  border: none;
+  color: white;
+  width: 35px;
+  height: 35px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  -webkit-transition-duration: 0.4s; /* Safari */
+  transition-duration: 0.4s;
+  cursor: pointer;
+  border-radius: 50%;
+}
+
+.paginationButton:hover{
+  background-color: rgb(65, 83, 35);
+}
+
+.paginationText{
+  font-size: 12px;
+  min-width: 100px;
+  display: inline-block;
+}
