@@ -6,12 +6,7 @@ import { User, UsersConnectionType } from '../types';
 export async function getToken()
 {
   let token = await localStorage.getItem("@onboarding/token");
-  if (token == null){
-    return '';
-  }
-  else{
-    return token;
-  }
+  return token || '';
 }
 
 function buildContext(token?: string) {
