@@ -5,6 +5,7 @@ import { useMutation, useQuery } from '@apollo/client';
 import { func } from 'prop-types';
 import { Redirect } from 'react-router-dom';
 import { doLogin } from './LoginAuth';
+import {validateEmail, validatePassword} from './validationHelpers';
 
 interface LoginPageProps {
   email?: string;
@@ -95,7 +96,7 @@ class LoginPage extends React.Component<LoginPageProps, LoginPageState>  {
     }
     else {
       return (
-          <div className="login">
+          <div className="body">
             <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"></link>
             <h1 className="greeting">
               Bem-vindo(a) à Taqtile!
@@ -124,17 +125,7 @@ class LoginPage extends React.Component<LoginPageProps, LoginPageState>  {
 
 export default LoginPage;
 
-function validateEmail(email: string)
-{
-  var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-  return re.test(email);
-}
 
-function validatePassword(password: string)
-{
-  var re = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{7,}$/
-  return re.test(password);
-}
 
 
 

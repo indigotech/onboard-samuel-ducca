@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 //import App from './App';
-import './components/LoginPage.css';
+import './components/Input.css';
 import './components/UserListPage.css';
 
 
@@ -18,6 +18,7 @@ import {
   Link
 } from "react-router-dom";
 import UserListPage from './components/UserListPage';
+import { AddUserPage } from './components/AddUserPage';
 
 export const client = new ApolloClient({
   cache: new InMemoryCache(),
@@ -29,6 +30,9 @@ export const client = new ApolloClient({
 const App = () => (
   <Router>
     <Switch>
+      <Route path="/adduser">
+        <AddUserPage/>
+      </Route>
       <Route path="/users">
         <UserListPage/>
       </Route>

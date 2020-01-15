@@ -19,8 +19,6 @@ h1{
 td{
   border-top: 1px solid lightgray;
   font-size: 12px;
-  padding: 1rem;
-  padding-top: 0;
   -webkit-transition-duration: 0.2s; /* Safari */
   transition-duration: 0.2s;}
 
@@ -36,9 +34,9 @@ tr:last-child > td{
   margin: .5rem;
   font-size: 16px;
   font-weight: bold;
-  background-color: darkolivegreen; /* Green */
+  background-color: whitesmoke; /* Green */
   border: none;
-  color: white;
+  color: gray;
   width: 35px;
   height: 35px;
   text-align: center;
@@ -51,11 +49,44 @@ tr:last-child > td{
 }
 
 .paginationButton:hover{
-  background-color: rgb(65, 83, 35);
+  background-color: lightgray;
 }
 
 .paginationText{
   font-size: 12px;
   min-width: 100px;
   display: inline-block;
+}
+
+hr{
+  height: 1px;
+  color:lightgray;
+  background-color: lightgray;
+  border: none;
+  margin: 32px;
+}
+
+.addUserButton {
+  margin: 1rem;
+  font-size: 16px;
+  font-weight: bold;
+  background-color: darkolivegreen; /* Green */
+  border: none;
+  color: white;
+  padding: 12px 20px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  margin: 0px;
+  -webkit-transition-duration: 0.4s; /* Safari */
+  transition-duration: 0.4s;
+  cursor: pointer;
+  border-radius: 15px;
+
+  width: 50%;
+  max-width: 250px;
+}
+
+.addUserButton:hover{
+  background-color: rgb(65, 83, 35);
 }
