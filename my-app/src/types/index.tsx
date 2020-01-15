@@ -7,3 +7,14 @@ export interface User {
   email: string,
   role: string
 }
+
+export interface PageInfoType{
+  hasNextPage: boolean,
+  hasPreviousPage: boolean
+}
+
+export interface UsersConnectionType {
+  count: number,
+  nodes: User[],
+  pageInfo: PageInfoType
+}

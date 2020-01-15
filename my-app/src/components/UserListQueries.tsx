@@ -1,15 +1,12 @@
 import * as React from 'react';
 import { client } from '..';
 import gql from 'graphql-tag';
-import { User } from '../types';
+import { User, UsersConnectionType } from '../types';
 
 export async function getToken()
 {
   let token = await localStorage.getItem("@onboarding/token");
-  if (token == null)
-    return '';
-  else
-    return token;
+  return token || '';
 }
 
 function buildContext(token?: string) {
@@ -20,11 +17,11 @@ function buildContext(token?: string) {
   }
 }
 
-export async function fetchUsers() : Promise<User[]>
+export async function fetchUsers(offset:number,limit:number) : Promise<UsersConnectionType>
 {
   const USERS_QUERY = gql`
   query getUsers{
-    Users(offset:0)
+    Users(offset:${offset}, limit:${limit})
     {
       count
       nodes{
@@ -47,5 +44,5 @@ export async function fetchUsers() : Promise<User[]>
     const context = buildContext(token);
     var result = await client.query({query: USERS_QUERY, context: context})
 
-    return result.data.Users.nodes;
+    return result.data.Users;
 }

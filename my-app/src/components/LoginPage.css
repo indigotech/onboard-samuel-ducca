@@ -33,9 +33,10 @@
   background-color: rgb(65, 83, 35);
 }
 
-.login h1{
-  font-size: 30px;
+.h1{
+  font-size: 32px;
   font-weight: bold;
+  margin: 32px;
 }
 
 .inputArea{

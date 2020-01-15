@@ -5,13 +5,18 @@ import { User } from '../types';
 import {fetchUsers} from './UserListQueries'
 
 const UserListPage: React.FC = props => {
+  const limit = 5;
   const [userList, setUserList] = useState();
+  const [offset, setOffset] = useState(0);
+  const [count, setCount] = useState(0);
 
   useEffect(() => {
 
     async function getUserList() {
       try{
-        setUserList(await fetchUsers());
+        var usersData = await fetchUsers(offset,limit);
+        setUserList(usersData.nodes);
+        setCount(usersData.count);
       }
       catch(error){
         alert(error);
@@ -20,27 +25,47 @@ const UserListPage: React.FC = props => {
 
     getUserList();
 
-  }, []);
+  }, [offset, count]);
 
-  if (userList == null){
-    return (
-      <div className="userList" >
-      <h2 className="title"> Usuários Cadastrados </h2>
-        <p> Nenhum usuário encontrado </p>
-    </div>
-    )
+  //Negative amount = go to previous pages, positive amount = next pages
+  function handleChangePage(amount: number){
+    var newOffset = Math.min(offset + limit*amount, count-(count%limit));
+    newOffset = Math.max(newOffset, 0); //no negative offset
+    setOffset(newOffset);
   }
-  else {
+
     return (
       <div className="userList" >
-        <h2 className="title"> Usuários Cadastrados </h2>
-        <List list={userList}></List>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"></link>
+        <h1> Usuários Cadastrados </h1>
+        {userList ? (
+          <>
+            <List list={userList}></List>
+            <PaginationFooter offset={offset} limit={limit} count={count} onChangePage={handleChangePage} ></PaginationFooter>
+          </>
+        ) : (
+          <p> Nenhum usuário encontrado </p>
+        )}
+
       </div>
     );
-  }
 }
 
 export default UserListPage;
+interface FooterProps{
+  offset: number,
+  limit: number,
+  count: number,
+  onChangePage: (amount: number) => void
+}
+
+const PaginationFooter: React.FC<FooterProps> = props => (
+  <div>
+    <button className='paginationButton' onClick={() => props.onChangePage(-1)}> <i className="fa fa-chevron-left"></i> </button>
+      <span className='paginationText'>Página {Math.ceil(props.offset/props.limit)} de {Math.floor(props.count/props.limit)}</span>
+    <button className='paginationButton' onClick={() => props.onChangePage(+1)}> <i className="fa fa-chevron-right"></i> </button>
+  </div>
+);
 
 interface ListProps {
   list: User[];
@@ -65,10 +90,7 @@ const ListItem: React.FC<ListItemProps> = props => (
   <tr>
     <td>
       <h2>{props.item.name}</h2>
-      <p> <b>Email:</b> {props.item.email}</p>
-      <p> <b>CPF:</b> {props.item.cpf}</p>
-      <p> <b>Cargo:</b> {props.item.role}</p>
-      <p> <b>Nascimento:</b> {props.item.birthDate}</p>
+      <p>{props.item.email}</p>
     </td>
   </tr>
 );
