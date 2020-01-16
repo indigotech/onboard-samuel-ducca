@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { client } from '..';
 import gql from 'graphql-tag';
-import { User, UsersConnectionType } from '../types';
+import { User, UsersConnectionType, UserInputType} from '../types';
 
 export async function getToken()
 {
@@ -45,4 +45,23 @@ export async function fetchUsers(offset:number,limit:number) : Promise<UsersConn
     var result = await client.query({query: USERS_QUERY, context: context})
 
     return result.data.Users;
+}
+
+export async function createUser(user: UserInputType) : Promise<User>
+{
+  const CREATE_USER_MUTATION = gql`
+  mutation createUser{
+    UserCreate(data: {user: ${user})
+    {
+      name,
+      id,
+      cpf,
+      birthDate,
+      email,
+      role
+    }
+  }
+  `;
+  var result = await client.mutate({mutation: CREATE_USER_MUTATION});
+  return result.data.UserCreate;
 }

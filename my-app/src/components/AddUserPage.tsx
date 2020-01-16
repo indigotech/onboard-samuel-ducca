@@ -6,96 +6,36 @@ import {validateEmail, validateDate, validateCpf} from './validationHelpers';
 
 export const AddUserPage: React.FC = props => {
 
-  const [userName, setUserName] = useState("");
-  const [badName, setBadName] = useState(false);
-  const [userCpf, setUserCpf] = useState("");
-  const [badCpf, setBadCpf] = useState(false);
-  const [userBirthDate, setUserBirthdate] = useState("");
-  const [badDate, setBadDate] = useState(false);
-  const [userEmail, setUserEmail] = useState("");
-  const [badEmail, setBadEmail] = useState(false);
-  const [userRole, setUserRole] = useState("");
-  const [badRole, setBadRole] = useState(false);
+  const [userName, setUserName] = useState({ value:"", valid: true});
+  const [userCpf, setUserCpf] = useState({ value:"", valid: true});
+  const [userBirthDate, setUserBirthdate] = useState({ value:"", valid: true});
+  const [userEmail, setUserEmail] = useState({ value:"", valid: true});
+  const [userRole, setUserRole] = useState({ value:"", valid: true});
+  const [userPassword, setUserPassword] = useState({ value:"", valid: true});
 
   function handleChange(event: any) {
     const name = event.target.name;
+    const value = event.target.value;
 
-    switch(name){
-      case "name":
-        setUserName(event.target.value);
-        break;
-      case "cpf":
-        setUserCpf(event.target.value);
-        break;
-      case "birthDate":
-        setUserBirthdate(event.target.value);
-          break;
-      case "email":
-        setUserEmail(event.target.value);
-          break;
-      case "role":
-        setUserRole(event.target.value);
-        break;
-      default:
-    }
+    const mapField: { [key: string]: ({value, valid} : {value: string, valid:boolean}) => void } = {
+      name: setUserName,
+      cpf: setUserCpf,
+      birthDate: setUserBirthdate,
+      email: setUserEmail,
+      role: setUserRole,
+    };
+
+    mapField[name]({value: value, valid: true});
   }
 
   function handleSubmit(){
 
-    var badEmailtmp = false, badCpftmp = false, badDatetmp = false;
+    setUserEmail({value: userEmail.value, valid: validateEmail(userEmail.value)});
+    setUserBirthdate({value: userBirthDate.value, valid: validateDate(userBirthDate.value)});
+    setUserCpf({value: userCpf.value, valid: validateCpf(userCpf.value)});
+    setUserName({value: userName.value, valid: !(userName.value == "")});
+    setUserRole({value: userRole.value, valid: !(userRole.value == "")})
 
-    if (!validateEmail(userEmail)){
-      if (userEmail == ""){
-        alert('Forneça um endereço de email');
-      }
-      else {
-        alert('Email inválido');
-      }
-      badEmailtmp = true;
-    }
-    else{
-      badEmailtmp = false;
-    }
-    if (!validateDate(userBirthDate)){
-      alert('Data inválida');
-      badDatetmp = true;
-    }
-    else{
-      badDatetmp = false;
-    }
-
-    if (!validateCpf(userCpf)){
-      if (userCpf == ""){
-        alert('Forneça o CPF');
-      }
-      else {
-        alert('CPF inválido');
-      }
-      badCpftmp = true;
-    }
-    else{
-      badCpftmp = false;
-    }
-
-    if (userName == ""){
-      setBadName(true);
-      alert("Adicione nome");
-    }
-    else{
-      setBadName(false);
-    }
-
-    if (userRole == ""){
-      setBadRole(true);
-      alert("Adicione cargo");
-    }
-    else{
-      setBadRole(false);
-    }
-
-    setBadDate(badDatetmp);
-    setBadCpf(badCpftmp);
-    setBadEmail(badEmailtmp);
   }
 
   return(
@@ -103,11 +43,11 @@ export const AddUserPage: React.FC = props => {
       <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"></link>
       <h1> Cadastro de Usuário </h1>
       <div className="inputArea">
-        <Input name="name" label="Nome" value={userName} onChange={handleChange} className={badName ? "inputFieldError" : ""} />
-        <Input name="email" label="Email" value={userEmail} onChange={handleChange} className={badEmail ? "inputFieldError" : ""}/>
-        <Input name="cpf" label="CPF" value={userCpf} onChange={handleChange} className={badCpf ? "inputFieldError" : ""}/>
-        <Input name="birthDate" label="Data de Nascimento" value={userBirthDate} onChange={handleChange} type="date" className={badDate ? "inputFieldError" : ""}/>
-        <Input name="role" label="Cargo" value={userRole} onChange={handleChange} className={badRole ? "inputFieldError" : ""}/>
+        <Input name="name" label="Nome" value={userName.value} onChange={handleChange} className={!userName.valid ? "inputFieldError" : ""} />
+        <Input name="email" label="Email" value={userEmail.value} onChange={handleChange} className={!userEmail.valid ? "inputFieldError" : ""}/>
+        <Input name="cpf" label="CPF" value={userCpf.value} onChange={handleChange} className={!userCpf.valid ? "inputFieldError" : ""}/>
+        <Input name="birthDate" label="Data de Nascimento" value={userBirthDate.value} onChange={handleChange} type="date" className={!userBirthDate.valid ? "inputFieldError" : ""}/>
+        <Input name="role" label="Cargo" value={userRole.value} onChange={handleChange} className={!userRole.valid ? "inputFieldError" : ""}/>
       </div>
       <button className="submitButton secondary"> Cancelar </button>
       <button className="submitButton" onClick={handleSubmit}> Salvar</button>

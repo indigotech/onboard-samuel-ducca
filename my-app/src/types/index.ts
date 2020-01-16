@@ -8,6 +8,21 @@ export interface User {
   role: string
 }
 
+export enum UserRoleType{
+  admin,
+  user
+}
+
+export interface UserInputType {
+  id: number,
+  name: string,
+  cpf: string,
+  birthDate: string,
+  email: string,
+  password: string,
+  role: UserRoleType
+}
+
 export interface PageInfoType{
   hasNextPage: boolean,
   hasPreviousPage: boolean
