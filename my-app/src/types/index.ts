@@ -14,7 +14,6 @@ export enum UserRoleType{
 }
 
 export interface UserInputType {
-  id: number,
   name: string,
   cpf: string,
   birthDate: string,
