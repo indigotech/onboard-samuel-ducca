@@ -1,9 +1,10 @@
-.login {
+.body {
     text-align: center;
     margin: 2rem;
     font-size: 20px;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   }
+
 
 .submitButton {
   margin: 1rem;
@@ -16,7 +17,7 @@
   text-align: center;
   text-decoration: none;
   display: inline-block;
-  margin: 4px 0px;
+  margin: 4px 4px;
   -webkit-transition-duration: 0.4s; /* Safari */
   transition-duration: 0.4s;
   cursor: pointer;
@@ -29,14 +30,29 @@
   opacity: 50%;
 }
 
+.submitButton.secondary{
+  background-color:transparent;
+  border: 1px solid lightgray;
+  color:black;
+}
+
 .submitButton:hover{
   background-color: rgb(65, 83, 35);
 }
+
+.submitButton.secondary:hover{
+  background-color:whitesmoke;
+}
+
 
 .h1{
   font-size: 32px;
   font-weight: bold;
   margin: 32px;
+}
+
+label{
+  font-size: 16px;
 }
 
 .inputArea{

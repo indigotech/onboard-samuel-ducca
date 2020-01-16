@@ -2,13 +2,16 @@
 import * as React from 'react';
 import { useState, useEffect } from 'react';
 import { User } from '../types';
-import {fetchUsers} from './UserListQueries'
+import {fetchUsers} from './UserListQueries';
+import { Redirect } from 'react-router-dom';
+
 
 const UserListPage: React.FC = props => {
   const limit = 5;
   const [userList, setUserList] = useState();
   const [offset, setOffset] = useState(0);
   const [count, setCount] = useState(0);
+  const [redirectAddUser, setRedirectAddUser] = useState(false);
 
   useEffect(() => {
 
@@ -34,6 +37,14 @@ const UserListPage: React.FC = props => {
     setOffset(newOffset);
   }
 
+  function handleRedirect(){
+    setRedirectAddUser(true);
+  }
+
+  if (redirectAddUser) {
+    return <Redirect push to="/adduser" />;
+  }
+
     return (
       <div className="userList" >
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"></link>
@@ -46,6 +57,8 @@ const UserListPage: React.FC = props => {
         ) : (
           <p> Nenhum usuário encontrado </p>
         )}
+        <hr></hr>
+        <button className="addUserButton" onClick={handleRedirect}> Adicionar Usuário </button>
 
       </div>
     );
