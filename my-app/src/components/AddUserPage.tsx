@@ -7,6 +7,7 @@ import {validateEmail, validateDate, validateCpf} from './validationHelpers';
 export const AddUserPage: React.FC = props => {
 
   const [userName, setUserName] = useState("");
+  const [badName, setBadName] = useState(false);
   const [userCpf, setUserCpf] = useState("");
   const [badCpf, setBadCpf] = useState(false);
   const [userBirthDate, setUserBirthdate] = useState("");
@@ -14,6 +15,7 @@ export const AddUserPage: React.FC = props => {
   const [userEmail, setUserEmail] = useState("");
   const [badEmail, setBadEmail] = useState(false);
   const [userRole, setUserRole] = useState("");
+  const [badRole, setBadRole] = useState(false);
 
   function handleChange(event: any) {
     const name = event.target.name;
@@ -75,6 +77,22 @@ export const AddUserPage: React.FC = props => {
       badCpftmp = false;
     }
 
+    if (userName == ""){
+      setBadName(true);
+      alert("Adicione nome");
+    }
+    else{
+      setBadName(false);
+    }
+
+    if (userRole == ""){
+      setBadRole(true);
+      alert("Adicione cargo");
+    }
+    else{
+      setBadRole(false);
+    }
+
     setBadDate(badDatetmp);
     setBadCpf(badCpftmp);
     setBadEmail(badEmailtmp);
@@ -85,11 +103,11 @@ export const AddUserPage: React.FC = props => {
       <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"></link>
       <h1> Cadastro de Usuário </h1>
       <div className="inputArea">
-        <Input name="name" label="Nome" value={userName} onChange={handleChange} />
+        <Input name="name" label="Nome" value={userName} onChange={handleChange} className={badName ? "inputFieldError" : ""} />
         <Input name="email" label="Email" value={userEmail} onChange={handleChange} className={badEmail ? "inputFieldError" : ""}/>
         <Input name="cpf" label="CPF" value={userCpf} onChange={handleChange} className={badCpf ? "inputFieldError" : ""}/>
         <Input name="birthDate" label="Data de Nascimento" value={userBirthDate} onChange={handleChange} type="date" className={badDate ? "inputFieldError" : ""}/>
-        <Input name="role" label="Cargo" value={userRole} onChange={handleChange}/>
+        <Input name="role" label="Cargo" value={userRole} onChange={handleChange} className={badRole ? "inputFieldError" : ""}/>
       </div>
       <button className="submitButton secondary"> Cancelar </button>
       <button className="submitButton" onClick={handleSubmit}> Salvar</button>
