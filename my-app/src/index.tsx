@@ -19,6 +19,7 @@ import {
 } from "react-router-dom";
 import UserListPage from './components/UserListPage';
 import { AddUserPage } from './components/AddUserPage';
+import UserDetailPage from './components/UserDetailPage'
 
 export const client = new ApolloClient({
   cache: new InMemoryCache(),
@@ -35,6 +36,9 @@ const App = () => (
       </Route>
       <Route path="/users">
         <UserListPage/>
+      </Route>
+      <Route path="/userdetail/:id" >
+        <UserDetailPage />
       </Route>
       <Route exact path="/">
         <LoginPage />

@@ -17,6 +17,30 @@ function buildContext(token?: string) {
   }
 }
 
+export async function fetchUser(id:number) : Promise<User>
+{
+  const USER_QUERY = gql`
+  query fetchUser{
+    User(id:${id})
+    {
+      name,
+      id,
+      cpf,
+      birthDate,
+      email,
+      role
+    }
+  }
+  `;
+
+    const token = await getToken();
+    const context = buildContext(token);
+    var result = await client.query({query: USER_QUERY, context: context})
+
+    return result.data.User;
+}
+
+
 export async function fetchUsers(offset:number,limit:number) : Promise<UsersConnectionType>
 {
   const USERS_QUERY = gql`
