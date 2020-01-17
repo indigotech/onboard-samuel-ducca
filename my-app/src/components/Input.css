@@ -59,7 +59,7 @@ label{
   margin-top: 2rem;
 }
 
-.inputArea input{
+.inputArea input {
   width: 70%;
   max-width: 300px;
   border: 2px solid lightgray;
@@ -76,6 +76,22 @@ label{
   border: 2px solid #555;
 }
 
+.inputArea select{
+  width: 70%;
+  max-width: 300px;
+  border: 2px solid lightgray;
+  border-radius: 15px;
+  padding: 12px 20px;
+  margin: 4px 0;
+  box-sizing: border-box;
+  outline: none;
+  -webkit-transition: 0.2s;
+  transition: 0.2s;
+}
+
+.inputArea select:focus{
+  border: 2px solid #555;
+}
 .inputField{
   margin: 1rem;
 }

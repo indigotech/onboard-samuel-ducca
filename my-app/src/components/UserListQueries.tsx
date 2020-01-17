@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { client } from '..';
 import gql from 'graphql-tag';
-import { User, UsersConnectionType } from '../types';
+import { User, UsersConnectionType, UserInputType, UserRoleType} from '../types';
 
 export async function getToken()
 {
@@ -19,30 +19,51 @@ function buildContext(token?: string) {
 
 export async function fetchUsers(offset:number,limit:number) : Promise<UsersConnectionType>
 {
-  const USERS_QUERY = gql`
-  query getUsers{
-    Users(offset:${offset}, limit:${limit})
-    {
-      count
-      nodes{
-        id,
-        name,
-        email,
-        cpf,
-        role,
-        birthDate
-      }
-      pageInfo{
-        hasNextPage,
-        hasPreviousPage
-      }
-    }
-  }
-  `;
 
     const token = await getToken();
     const context = buildContext(token);
-    var result = await client.query({query: USERS_QUERY, context: context})
+    var result = await client.query({query: USERS_QUERY, variables:{offset: offset, limit:limit}, context: context})
 
     return result.data.Users;
 }
+
+export async function createUser(user: UserInputType) : Promise<UserInputType>
+{
+  var result = await client.mutate({mutation: CREATE_USER_MUTATION, variables: {user: user}});
+  return result.data.UserCreate;
+}
+
+const CREATE_USER_MUTATION = gql`
+mutation createUser($user: UserInput!){
+  UserCreate(data: $user)
+  {
+    name,
+    id,
+    cpf,
+    birthDate,
+    email,
+    role
+  }
+}
+`;
+
+const USERS_QUERY = gql`
+query getUsers($offset: Int, $limit: Int){
+  Users(offset: $offset, limit: $limit)
+  {
+    count
+    nodes{
+      id,
+      name,
+      email,
+      cpf,
+      role,
+      birthDate
+    }
+    pageInfo{
+      hasNextPage,
+      hasPreviousPage
+    }
+  }
+}
+`;
