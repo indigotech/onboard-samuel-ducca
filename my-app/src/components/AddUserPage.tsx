@@ -36,7 +36,7 @@ export const AddUserPage: React.FC = props => {
   async function handleSubmit(){
 
     var isValid = validateEmail(userEmail.value) && validateDate(userBirthDate.value) && validateCpf(userCpf.value) &&
-    validatePassword(userPassword.value) && !(userName.value == "");
+    validatePassword(userPassword.value) && !(userName.value);
 
     if (isValid){
       setIsLoading(true);
@@ -46,7 +46,7 @@ export const AddUserPage: React.FC = props => {
         cpf: userCpf.value,
         password: userPassword.value,
         name: userName.value,
-        role: userRole.value,
+        role: UserRoleType[userRole.value]
       }
       try{
         await createUser(userInput);

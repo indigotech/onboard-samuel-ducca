@@ -19,56 +19,51 @@ function buildContext(token?: string) {
 
 export async function fetchUsers(offset:number,limit:number) : Promise<UsersConnectionType>
 {
-  const USERS_QUERY = gql`
-  query getUsers{
-    Users(offset:${offset}, limit:${limit})
-    {
-      count
-      nodes{
-        id,
-        name,
-        email,
-        cpf,
-        role,
-        birthDate
-      }
-      pageInfo{
-        hasNextPage,
-        hasPreviousPage
-      }
-    }
-  }
-  `;
 
     const token = await getToken();
     const context = buildContext(token);
-    var result = await client.query({query: USERS_QUERY, context: context})
+    var result = await client.query({query: USERS_QUERY, variables:{offset: offset, limit:limit}, context: context})
 
     return result.data.Users;
 }
 
 export async function createUser(user: UserInputType) : Promise<UserInputType>
 {
-  const CREATE_USER_MUTATION = gql`
-  mutation createUser{
-    UserCreate(data:{
-      name: \"${user.name}\",
-      cpf: \"${user.cpf}\",
-      birthDate: \"${user.birthDate}\",
-      email: \"${user.email}\",
-      password: \"${user.password}\",
-      role: ${UserRoleType[user.role]}
-    })
-    {
-      name,
-      id,
-      cpf,
-      birthDate,
-      email,
-      role
-    }
-  }
-  `;
-  var result = await client.mutate({mutation: CREATE_USER_MUTATION});
+  var result = await client.mutate({mutation: CREATE_USER_MUTATION, variables: {user: user}});
   return result.data.UserCreate;
 }
+
+const CREATE_USER_MUTATION = gql`
+mutation createUser($user: UserInput!){
+  UserCreate(data: $user)
+  {
+    name,
+    id,
+    cpf,
+    birthDate,
+    email,
+    role
+  }
+}
+`;
+
+const USERS_QUERY = gql`
+query getUsers($offset: Int, $limit: Int){
+  Users(offset: $offset, limit: $limit)
+  {
+    count
+    nodes{
+      id,
+      name,
+      email,
+      cpf,
+      role,
+      birthDate
+    }
+    pageInfo{
+      hasNextPage,
+      hasPreviousPage
+    }
+  }
+}
+`;

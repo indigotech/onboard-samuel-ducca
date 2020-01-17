@@ -19,7 +19,7 @@ export interface UserInputType {
   birthDate: string,
   email: string,
   password: string,
-  role: UserRoleType
+  role: string,
 }
 
 export interface PageInfoType{
