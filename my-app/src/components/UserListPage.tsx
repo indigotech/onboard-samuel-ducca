@@ -6,6 +6,9 @@ import {fetchUsers, fetchUser} from './UserListQueries';
 import { Redirect } from 'react-router-dom';
 import { H1 } from './atm/h1';
 import { Button } from './atm/button';
+import { PaginationFooter } from './mol/PaginationFooter'
+import { List } from './mol/List';
+import { PaginatedList } from './org/PaginatedList'
 
 
 const UserListPage: React.FC = props => {
@@ -60,10 +63,8 @@ const UserListPage: React.FC = props => {
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"></link>
         <H1> Usuários Cadastrados </H1>
         {userList ? (
-          <>
-            <List list={userList} handleClick={handleUserClick}></List>
-            <PaginationFooter offset={offset} limit={limit} count={count} onChangePage={handleChangePage} ></PaginationFooter>
-          </>
+          <PaginatedList list={userList} onClick={handleUserClick} offset={offset} limit={limit}
+          count={count} onChangePage={handleChangePage}/>
         ) : (
           <p> Nenhum usuário encontrado </p>
         )}
@@ -74,47 +75,3 @@ const UserListPage: React.FC = props => {
 }
 
 export default UserListPage;
-interface FooterProps{
-  offset: number,
-  limit: number,
-  count: number,
-  onChangePage: (amount: number) => void
-}
-
-const PaginationFooter: React.FC<FooterProps> = props => (
-  <div>
-    <button className='paginationButton' onClick={() => props.onChangePage(-1)}> <i className="fa fa-chevron-left"></i> </button>
-      <span className='paginationText'>Página {Math.ceil(props.offset/props.limit)} de {Math.floor(props.count/props.limit)}</span>
-    <button className='paginationButton' onClick={() => props.onChangePage(+1)}> <i className="fa fa-chevron-right"></i> </button>
-  </div>
-);
-
-interface ListProps {
-  list: User[];
-  handleClick: (id:number) => void
-}
-
-const List: React.FC<ListProps> = props => (
-  <table>
-    <tbody>
-    {props.list.map((item : User) => (
-        <ListItem key={item.id} item={item} handleClick={props.handleClick}/>
-    ))}
-    </tbody>
-  </table>
-);
-
-interface ListItemProps {
-  key: number;
-  item: User;
-  handleClick: (id:number) => void
-}
-
-const ListItem: React.FC<ListItemProps> = props => (
-  <tr>
-    <td onClick={() => props.handleClick(props.item.id)}>
-      <h2>{props.item.name}</h2>
-      <p>{props.item.email}</p>
-    </td>
-  </tr>
-);

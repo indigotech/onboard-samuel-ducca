@@ -5,10 +5,6 @@ import { Redirect } from 'react-router-dom';
 import { doLogin } from './LoginAuth';
 import {validateEmail, validatePassword} from './validationHelpers';
 import { H1 } from './atm/h1';
-import { Button } from './atm/button';
-import { Label } from './atm/label';
-import { Input } from './atm/input';
-import { Caption } from './atm/caption';
 import { LoadingButton } from './mol/loadingButton';
 import { InputText } from './mol/InputText';
 
@@ -22,6 +18,8 @@ interface LoginPageState {
   password: string;
   badPassword: boolean;
   badEmail: boolean;
+  emailError: string,
+  passwordError: string,
   redirect: boolean;
   isLoading: boolean;
 }
@@ -34,6 +32,8 @@ class LoginPage extends React.Component<LoginPageProps, LoginPageState>  {
       password: '',
       badPassword: false,
       badEmail: false,
+      emailError: '',
+      passwordError: '',
       redirect: false,
       isLoading: false
     };
@@ -59,20 +59,20 @@ class LoginPage extends React.Component<LoginPageProps, LoginPageState>  {
 
     if (!validateEmail(this.state.email)){
       if (this.state.email == ""){
-        alert('Forneça um endereço de email');
+        this.setState({emailError: "Forneça um endereço de email"});
       }
       else {
-        alert('Email inválido');
+        this.setState({emailError: "Email inválido"});
       }
       badEmailtmp = true;
     }
 
     if (!validatePassword(this.state.password)){
       if (this.state.password == ""){
-        alert('Forneça uma senha');
+        this.setState({passwordError: "Forneça uma senha"});
       }
       else {
-        alert('A senha deve ter pelo menos 7 caracteres e conter ao menos um dígito e uma letra');
+        this.setState({passwordError: "A senha deve ter pelo menos 7 caracteres e conter ao menos um dígito e uma letra"});
       }
       badPasswordtmp = true;
     }
@@ -106,15 +106,12 @@ class LoginPage extends React.Component<LoginPageProps, LoginPageState>  {
             <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"></link>
             <H1>Bem-vindo(a) à Taqtile!</H1>
 
-            <div className="">
-              <form>
-                <InputText name="email" value={this.state.email} onChange={this.handleChange} label="Email"
-                errorCaption="Email inválido" error={this.state.badEmail} placeholder="nome.sobrenome@taqtile.com"/>
-                <InputText name="password" value={this.state.password} onChange={this.handleChange} label="Senha"
-                errorCaption="Senha inválida" error={this.state.badPassword} type="password"/>
-                <LoadingButton onClick={this.handleSubmit} isLoading={this.state.isLoading} text="Entrar" disabled={this.state.isLoading}/>
-              </form>
-            </div>
+            <InputText name="email" value={this.state.email} onChange={this.handleChange} label="Email"
+                errorCaption={this.state.emailError} error={this.state.badEmail} placeholder="nome.sobrenome@taqtile.com"/>
+            <InputText name="password" value={this.state.password} onChange={this.handleChange} label="Senha"
+                errorCaption={this.state.passwordError} error={this.state.badPassword} type="password"/>
+            <LoadingButton onClick={this.handleSubmit} isLoading={this.state.isLoading} text="Entrar" disabled={this.state.isLoading}/>
+
           </div>
       );
     }

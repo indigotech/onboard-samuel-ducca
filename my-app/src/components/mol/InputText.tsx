@@ -19,7 +19,7 @@ export const InputText: React.FC<InputTextProps> = props => {
 
   return(
     <div>
-      <Label error={props.error}>{props.label}</Label> <br/>
+      <Label error={props.error}>{props.label}</Label>
       <Input error={props.error} placeholder={props.placeholder} type={props.type}
       name={props.name} value={props.value} onChange={props.onChange}/> <br/>
       <Caption error={props.error}> {props.errorCaption} </Caption>

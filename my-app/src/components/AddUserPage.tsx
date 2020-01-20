@@ -8,6 +8,7 @@ import { LoadingButton } from './mol/loadingButton';
 import { Button } from './atm/button';
 import { InputText } from './mol/InputText';
 import { H1 } from './atm/h1';
+import { InputSelect, OptionType } from './mol/InputSelect'
 
 
 export const AddUserPage: React.FC = props => {
@@ -21,8 +22,9 @@ export const AddUserPage: React.FC = props => {
   const [redirect, setRedirect] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
-  const erroMessage = "Campo inválido";
-
+  const errorMessage = "Campo inválido";
+  const options = [{value: UserRoleType.admin, text: "Administrador"},
+  {value: UserRoleType.user, text: "Usuário"}];
 
   function handleChange(event: any) {
     const name = event.target.name;
@@ -84,42 +86,18 @@ export const AddUserPage: React.FC = props => {
     <div className="body">
       <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"></link>
       <H1> Cadastro de Usuário </H1>
-      <div className="">
-        <InputText name="name" label="Nome" value={userName.value} onChange={handleChange} error={!userName.valid} errorCaption={erroMessage} />
-        <InputText name="email" label="Email" value={userEmail.value} onChange={handleChange} error={!userEmail.valid} errorCaption={erroMessage}/>
-        <InputText name="password" label="Senha" value={userPassword.value} onChange={handleChange} type="password" error={!userPassword.valid} errorCaption={erroMessage}/>
-        <InputText name="cpf" label="CPF" value={userCpf.value} onChange={handleChange} error={!userCpf.valid} errorCaption={erroMessage}/>
-        <InputText name="birthDate" label="Data de Nascimento" value={userBirthDate.value} onChange={handleChange} type="date" error={!userBirthDate.valid} errorCaption={erroMessage}/>
-        {/* Vou componentizar mais tarde */}
-        <div className="inputField">
-          <label>Cargo</label> <br></br>
-          <select name="role" onChange={handleChange} value={userRole.value}>
-            <option value={UserRoleType.admin}> Administrador </option>
-            <option value={UserRoleType.user}> Usuário </option>
-          </select>
-        </div>
-      </div>
+
+      <InputText name="name" label="Nome" value={userName.value} onChange={handleChange} error={!userName.valid} errorCaption={errorMessage} />
+      <InputText name="email" label="Email" value={userEmail.value} onChange={handleChange} error={!userEmail.valid} errorCaption={errorMessage}/>
+      <InputText name="password" label="Senha" value={userPassword.value} onChange={handleChange} type="password" error={!userPassword.valid} errorCaption={errorMessage}/>
+      <InputText name="cpf" label="CPF" value={userCpf.value} onChange={handleChange} error={!userCpf.valid} errorCaption={errorMessage}/>
+      <InputText name="birthDate" label="Data de Nascimento" value={userBirthDate.value} onChange={handleChange} type="date" error={!userBirthDate.valid} errorCaption={errorMessage}/>
+      <InputSelect name="role" onChange={handleChange} value={userRole.value} options={options}/>
+
       <Button secondary onClick={() => setRedirect(true)}> Cancelar</Button>
       <LoadingButton isLoading={isLoading} disabled={isLoading} text="Salvar" onClick={handleSubmit}></LoadingButton>
     </div>
 
   );
 }
-/*
-interface InputProps{
-  label?: string,
-  name: string,
-  value: any,
-  placeholder?: any,
-  type?: string,
-  className?: string,
-  onChange: (event: any) => void
-}
 
-const InputText: React.FC<InputProps> = props => (
-  <div className="inputField">
-    <label>{props.label}</label> <br></br>
-    <input placeholder={props.placeholder} name={props.name} value={props.value} onChange={props.onChange}
-    type={props.type} className={props.className}></input>
-  </div>
-); */
