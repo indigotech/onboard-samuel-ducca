@@ -6,6 +6,8 @@ import { createUser } from './UserListQueries';
 import { Redirect } from 'react-router-dom';
 import { LoadingButton } from './mol/loadingButton';
 import { Button } from './atm/button';
+import { InputText } from './mol/InputText';
+import { H1 } from './atm/h1';
 
 
 export const AddUserPage: React.FC = props => {
@@ -18,6 +20,9 @@ export const AddUserPage: React.FC = props => {
   const [userPassword, setUserPassword] = useState({ value:"", valid: true});
   const [redirect, setRedirect] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+
+  const erroMessage = "Campo inválido";
+
 
   function handleChange(event: any) {
     const name = event.target.name;
@@ -78,13 +83,13 @@ export const AddUserPage: React.FC = props => {
   return(
     <div className="body">
       <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"></link>
-      <h1> Cadastro de Usuário </h1>
-      <div className="inputArea">
-        <InputText name="name" label="Nome" value={userName.value} onChange={handleChange} className={!userName.valid ? "inputFieldError" : ""} />
-        <InputText name="email" label="Email" value={userEmail.value} onChange={handleChange} className={!userEmail.valid ? "inputFieldError" : ""}/>
-        <InputText name="password" label="Senha" value={userPassword.value} onChange={handleChange} type="password" className={!userPassword.valid ? "inputFieldError" : ""}/>
-        <InputText name="cpf" label="CPF" value={userCpf.value} onChange={handleChange} className={!userCpf.valid ? "inputFieldError" : ""}/>
-        <InputText name="birthDate" label="Data de Nascimento" value={userBirthDate.value} onChange={handleChange} type="date" className={!userBirthDate.valid ? "inputFieldError" : ""}/>
+      <H1> Cadastro de Usuário </H1>
+      <div className="">
+        <InputText name="name" label="Nome" value={userName.value} onChange={handleChange} error={!userName.valid} errorCaption={erroMessage} />
+        <InputText name="email" label="Email" value={userEmail.value} onChange={handleChange} error={!userEmail.valid} errorCaption={erroMessage}/>
+        <InputText name="password" label="Senha" value={userPassword.value} onChange={handleChange} type="password" error={!userPassword.valid} errorCaption={erroMessage}/>
+        <InputText name="cpf" label="CPF" value={userCpf.value} onChange={handleChange} error={!userCpf.valid} errorCaption={erroMessage}/>
+        <InputText name="birthDate" label="Data de Nascimento" value={userBirthDate.value} onChange={handleChange} type="date" error={!userBirthDate.valid} errorCaption={erroMessage}/>
         {/* Vou componentizar mais tarde */}
         <div className="inputField">
           <label>Cargo</label> <br></br>
@@ -100,7 +105,7 @@ export const AddUserPage: React.FC = props => {
 
   );
 }
-
+/*
 interface InputProps{
   label?: string,
   name: string,
@@ -117,4 +122,4 @@ const InputText: React.FC<InputProps> = props => (
     <input placeholder={props.placeholder} name={props.name} value={props.value} onChange={props.onChange}
     type={props.type} className={props.className}></input>
   </div>
-);
+); */
