@@ -2,7 +2,7 @@
 import * as React from 'react';
 import { useState, useEffect } from 'react';
 import { User } from '../types';
-import {fetchUsers} from './UserListQueries';
+import {fetchUsers, fetchUser} from './UserListQueries';
 import { Redirect } from 'react-router-dom';
 
 
@@ -12,6 +12,7 @@ const UserListPage: React.FC = props => {
   const [offset, setOffset] = useState(0);
   const [count, setCount] = useState(0);
   const [redirectAddUser, setRedirectAddUser] = useState(false);
+  const [redirectUserPage, setRedirectUserPage] = useState({active: false, value: 0});
 
   useEffect(() => {
 
@@ -37,12 +38,19 @@ const UserListPage: React.FC = props => {
     setOffset(newOffset);
   }
 
+  async function handleUserClick(id: number){
+    setRedirectUserPage({active: true, value: id})
+  }
   function handleRedirect(){
     setRedirectAddUser(true);
   }
 
+  if (redirectUserPage.active){
+    return <Redirect push to={`/userdetail/${redirectUserPage.value}`}/>;
+  }
+
   if (redirectAddUser) {
-    return <Redirect push to="/adduser" />;
+    return <Redirect push to="/adduser"/>;
   }
 
     return (
@@ -51,7 +59,7 @@ const UserListPage: React.FC = props => {
         <h1> Usuários Cadastrados </h1>
         {userList ? (
           <>
-            <List list={userList}></List>
+            <List list={userList} handleClick={handleUserClick}></List>
             <PaginationFooter offset={offset} limit={limit} count={count} onChangePage={handleChangePage} ></PaginationFooter>
           </>
         ) : (
@@ -82,13 +90,14 @@ const PaginationFooter: React.FC<FooterProps> = props => (
 
 interface ListProps {
   list: User[];
+  handleClick: (id:number) => void
 }
 
 const List: React.FC<ListProps> = props => (
   <table>
     <tbody>
     {props.list.map((item : User) => (
-        <ListItem key={item.id} item={item} />
+        <ListItem key={item.id} item={item} handleClick={props.handleClick}/>
     ))}
     </tbody>
   </table>
@@ -97,11 +106,12 @@ const List: React.FC<ListProps> = props => (
 interface ListItemProps {
   key: number;
   item: User;
+  handleClick: (id:number) => void
 }
 
 const ListItem: React.FC<ListItemProps> = props => (
   <tr>
-    <td>
+    <td onClick={() => props.handleClick(props.item.id)}>
       <h2>{props.item.name}</h2>
       <p>{props.item.email}</p>
     </td>
