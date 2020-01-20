@@ -4,6 +4,8 @@ import { useState, useEffect } from 'react';
 import { User } from '../types';
 import {fetchUsers, fetchUser} from './UserListQueries';
 import { Redirect } from 'react-router-dom';
+import { H1 } from './atm/h1';
+import { Button } from './atm/button';
 
 
 const UserListPage: React.FC = props => {
@@ -56,7 +58,7 @@ const UserListPage: React.FC = props => {
     return (
       <div className="userList" >
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"></link>
-        <h1> Usuários Cadastrados </h1>
+        <H1> Usuários Cadastrados </H1>
         {userList ? (
           <>
             <List list={userList} handleClick={handleUserClick}></List>
@@ -66,8 +68,7 @@ const UserListPage: React.FC = props => {
           <p> Nenhum usuário encontrado </p>
         )}
         <hr></hr>
-        <button className="addUserButton" onClick={handleRedirect}> Adicionar Usuário </button>
-
+        <Button large onClick={handleRedirect}> Adicionar Usuário </Button>
       </div>
     );
 }

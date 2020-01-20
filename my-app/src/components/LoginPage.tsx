@@ -6,6 +6,9 @@ import { func } from 'prop-types';
 import { Redirect } from 'react-router-dom';
 import { doLogin } from './LoginAuth';
 import {validateEmail, validatePassword} from './validationHelpers';
+import { H1 } from './atm/h1';
+import { Button } from './atm/button';
+import { LoadingButton } from './mol/loadingButton';
 
 interface LoginPageProps {
   email?: string;
@@ -98,9 +101,7 @@ class LoginPage extends React.Component<LoginPageProps, LoginPageState>  {
       return (
           <div className="body">
             <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"></link>
-            <h1 className="greeting">
-              Bem-vindo(a) à Taqtile!
-            </h1>
+            <H1>Bem-vindo(a) à Taqtile!</H1>
             <div className="inputArea">
 
               <form>
@@ -112,6 +113,8 @@ class LoginPage extends React.Component<LoginPageProps, LoginPageState>  {
                       <label>Senha</label> <br></br>
                       <input className={this.state.badPassword ? 'inputFieldError': ''} name="password" value={this.state.password} onChange={this.handleChange}></input>
                   </div>
+                  <Button onClick={this.handleSubmit} disabled={this.state.isLoading}>Teste de entrar</Button>
+                  <LoadingButton onClick={this.handleSubmit} isLoading={this.state.isLoading} text="Entrar" disabled={this.state.isLoading}/>
                   <button onClick={this.handleSubmit} className='submitButton' disabled={this.state.isLoading}>
                     <i className={this.state.isLoading? 'fa fa-circle-o-notch fa-spin' : ''}></i> Entrar
                   </button>

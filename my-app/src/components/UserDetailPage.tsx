@@ -5,6 +5,7 @@ import { useEffect, useState } from 'react';
 import { fetchUser } from './UserListQueries';
 import { User } from '../types';
 import { userInfo } from 'os';
+import { H1 } from './atm/h1';
 
 interface UseParamsType {
   id?: string;
@@ -38,7 +39,7 @@ interface UseParamsType {
 
    return(
     <div className="body">
-      <h1> Dados do Usuário </h1>
+      <H1> Dados do Usuário </H1>
       {user ? (
         <>
           <UserInfo user={user}/>

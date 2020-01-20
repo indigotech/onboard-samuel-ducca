@@ -4,6 +4,8 @@ import { User, UserRoleType, UserInputType } from '../types';
 import {validateEmail, validateDate, validateCpf, validatePassword} from './validationHelpers';
 import { createUser } from './UserListQueries';
 import { Redirect } from 'react-router-dom';
+import { LoadingButton } from './mol/loadingButton';
+import { Button } from './atm/button';
 
 
 export const AddUserPage: React.FC = props => {
@@ -92,8 +94,8 @@ export const AddUserPage: React.FC = props => {
           </select>
         </div>
       </div>
-      <button className="submitButton secondary" onClick={() => setRedirect(true)}> Cancelar </button>
-      <button className="submitButton" onClick={handleSubmit}> Salvar</button>
+      <Button secondary onClick={() => setRedirect(true)}> Cancelar</Button>
+      <LoadingButton isLoading={isLoading} disabled={isLoading} text="Salvar" onClick={handleSubmit}></LoadingButton>
     </div>
 
   );
